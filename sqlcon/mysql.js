@@ -4,7 +4,7 @@ let connection = mysql.createConnection({
   host: '116.62.150.180',
   user: 'fay',
   password: 'yang0313',
-  database: 'faywow'
+  database: 'game'
 })
 connection.connect()
 module.exports = {
