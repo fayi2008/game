@@ -3,28 +3,31 @@ let bodyParser = require('body-parser');
 
 module.exports = function (app) {
   app.use(bodyParser.json());
-  app.get('/setuser', function (req, res,next) {
-
-    let reqs = req
-    console.log(req.param('username'))
+  app.post('/setuser', function (req, res,next) {
 
     let sql = `insert into user (username,pwd) values (?,?)`
-    let  addSqlParams = [req.param('username'),req.param('pwd')];
-    console.log(sql)
-    con.con.query(sql,addSqlParams, function (err, rows) {
+    let param=[req.param('username'),req.param('pwd')];
 
+    if(!req.param('username')){
+      res.send(con.resbox({code: -1, msg: '账号请勿为空'}))
+      return
+    }
+    if(!req.param('pwd')){
+      res.send(con.resbox({code: -1, msg: '密码请勿为空'}))
+      return
+    }
+
+    con.con.query(sql,param, function (err, rows) {
+      console.log(err)
       let ress = ''
       if (err) {
-        console.log(err.errno)
-        if(err.errno=='1062'){
+        if(err.errcode=='1062'){
           ress = con.resbox({code: -1, msg: '已存在账号'})
-
-        } else{
+        }else{
           ress = con.resbox({code: -1, msg: '查询失败'})
         }
 
       } else {
-        console.log(rows)
         ress = con.resbox({data: rows})
       }
 

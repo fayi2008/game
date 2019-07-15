@@ -5,13 +5,13 @@ module.exports = function (app) {
   app.get('/getuser', function (req, res) {
     let sql = `SELECT * FROM USER WHERE 1=1`
 
-    con.con.query(sql, function (err, rows, fields) {
+    con.con.query(sql, function (err, result) {
 
       let ress = ''
       if (err) {
         ress = con.resbox({code: -1, msg: '查询失败'})
       } else {
-        ress = con.resbox({data: rows})
+        ress = con.resbox({data: result})
       }
 
       res.send(ress)
